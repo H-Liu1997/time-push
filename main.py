@@ -104,7 +104,7 @@ def lucky_lhy():
             # +  "\n今日概述："+str(response["data"]["fortunetext"]["all"])
             return data1, data2
         except:
-            return ("星座运势API调取错误，请检查API是否正确申请或是否填写正确")
+            return "幸运指数：???", "今日星座查询失败"
         
 def lucky_hzy():
     if ( Whether_lucky!=False):
@@ -122,7 +122,8 @@ def lucky_hzy():
             # +  "\n今日概述："+str(response["data"]["fortunetext"]["all"])
             return data1, data2
         except:
-            return ("星座运势API调取错误，请检查API是否正确申请或是否填写正确")
+            
+            return "幸运指数：???", "今日星座查询失败"
 
 #推送信息
 def send_message(
