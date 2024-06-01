@@ -125,11 +125,39 @@ def lucky_hzy():
             
             return "幸运指数：???", "今日星座查询失败"
 
+# import requests
+def get_uv_index(lat, lon):
+    url = "https://api.openuv.io/api/v1/uv"
+    headers = {
+        "x-access-token": "openuv-4g9zqrlwvqiryh-io"
+    }
+    params = {
+        "lat": lat,
+        "lng": lon,
+        "alt": 100,
+        "dt": ""
+    }
+
+    response = requests.get(url, headers=headers, params=params)
+
+    # 检查响应状态码并打印响应内容
+    if response.status_code == 200:
+        response = response.json()
+        # print(response)
+        data = str(response["result"]["uv_max"])
+        print(data)
+        return data    
+    else:
+        # print(f"Error: {response.status_code}")
+        return "???"
+
+
 #推送信息
 def send_message(
         to_user, access_token, city_name_hzy, weather_hzy, max_temperature_hzy, min_temperature_hzy, 
         city_name_lhy, weather_lhy, max_temperature_lhy, min_temperature_lhy,
         lucky_hzy, lucky_lhy, lucky_hzy2, lucky_lhy2,
+        uv_index_hzy, uv_index_lhy,
         ):
     '''
     {{date.DATA}} 
@@ -225,6 +253,14 @@ def send_message(
                 "value": lucky_lhy2,
                 "color": get_color()
             },
+            "uv_index_hzy": {
+                "value": uv_index_hzy,
+                "color": get_color()
+            },
+            "uv_index_lhy": {
+                "value": uv_index_lhy,
+                "color": get_color()
+            },
         }
     }
     for key, value in birthdays.items():
@@ -275,34 +311,11 @@ if __name__ == "__main__":
     # province, city = config["province"], config["city"]
     weather_lhy, max_temperature_lhy, min_temperature_lhy = get_weather(sanjose)
     weather_hzy, max_temperature_hzy, min_temperature_hzy = get_weather(taibei)
-
-    # #获取天行API
-    # tianxing_API=config["tianxing_API"]
-    # #是否开启天气预报API
-    # Whether_tip=config["Whether_tip"]
-    # #是否启用词霸每日一句
-    # Whether_Eng=config["Whether_Eng"]
+    # 获取紫外线指数
+    uv_index_lhy = get_uv_index(37.32, -121.58)
+    uv_index_hzy = get_uv_index(25.09, 121.55)
     #是否启用星座API
     Whether_lucky=config["Whether_lucky"]
-    # #是否启用励志古言API
-    # Whether_lizhi=config["Whether_lizhi"]
-    # #是否启用彩虹屁API
-    # Whether_caihongpi=config["Whether_caihongpi"]
-    # #是否启用健康小提示API
-    # Whether_health=config["Whether_health"]
-    # #获取星座
-    # astro = config["astro"]
-    # # 获取词霸每日金句
-    # note_ch, note_en = get_ciba()
-    # #彩虹屁
-    # pipi = caihongpi()
-    # #健康小提示
-    # health_tip = health()
-    # #下雨概率和建议
-    # pop,tips = tip()
-    # #励志名言
-    # lizhi = lizhi()
-    # #星座运势
     lucky_hzy_res, lucky_hzy_res2 = lucky_hzy() 
     lucky_lhy_res, lucky_lhy_res2 = lucky_lhy() 
     
@@ -310,7 +323,9 @@ if __name__ == "__main__":
     for i, user in enumerate(users):
         send_message(
             user, accessToken, config["city_hzy"], weather_hzy, max_temperature_hzy, min_temperature_hzy, 
-            config["city_lhy"], weather_lhy, max_temperature_lhy, min_temperature_lhy, lucky_hzy_res, lucky_lhy_res, lucky_hzy_res2, lucky_lhy_res2,
+            config["city_lhy"], weather_lhy, max_temperature_lhy, min_temperature_lhy, 
+            lucky_hzy_res, lucky_lhy_res, lucky_hzy_res2, lucky_lhy_res2,
+            uv_index_hzy, uv_index_lhy,
             )
     import time
     time_duration = 3.5
