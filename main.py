@@ -264,7 +264,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     # tokyo = '139.42,35.41'
-    sanjose = '37.20,121.53'
+    sanjose = '-121.58,37.32'
     taibei = '121.55,25.09'
 
     # 获取accessToken
