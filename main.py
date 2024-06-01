@@ -264,7 +264,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     # tokyo = '139.42,35.41'
-    san_jose = '37.20,121.53'
+    sanjose = '37.20,121.53'
     taibei = '121.55,25.09'
 
     # 获取accessToken
@@ -273,7 +273,7 @@ if __name__ == "__main__":
     users = config["user"]
     # 传入省份和市获取天气信息
     # province, city = config["province"], config["city"]
-    weather_lhy, max_temperature_lhy, min_temperature_lhy = get_weather(san_jose)
+    weather_lhy, max_temperature_lhy, min_temperature_lhy = get_weather(sanjose)
     weather_hzy, max_temperature_hzy, min_temperature_hzy = get_weather(taibei)
 
     # #获取天行API
